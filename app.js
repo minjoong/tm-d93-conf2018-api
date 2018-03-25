@@ -8,7 +8,7 @@ const usersRoutes = require('./routes/users');
 const userRoutes = require('./routes/user');
 
 const app = express();
-mongoose.connect('mongodb://localhost:27017/test');
+mongoose.connect('mongodb://localhost:27017/tm-d93-conf2018');
 
 app.use(morgan('dev'));
 
