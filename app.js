@@ -1,30 +1,29 @@
-let createError = require('http-errors');
-let express = require('express');
-let path = require('path');
-let cookieParser = require('cookie-parser');
-let logger = require('morgan');
+const createError = require('http-errors');
+const bodyParser = require('body-parser');
+const express = require('express');
+const mongoose = require('mongoose');
 
-let indexRouter = require('./routes/index');
-let usersRouter = require('./routes/users');
+const usersRoutes = require('./routes/users');
+const userRoutes = require('./routes/user');
 
-let app = express();
+const app = express();
+mongoose.connect('mongodb://localhost:27017/test');
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/users', usersRoutes);
+app.use('/user', userRoutes);
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-// catch 404 and forward to error handler
+// 404 에러를 잡아서 에러 던진다.
 app.use(function (req, res, next) {
-  next(createError(404));
+  next(createError(404, 'Not Found'));
+});
+
+// 모든 에러를 로깅하는 미들웨어
+app.use(function (err, req, res, next) {
+  console.error(err);
+  next(err);
 });
 
 // error handler
@@ -35,7 +34,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json({message: err.message});
 });
 
 module.exports = app;

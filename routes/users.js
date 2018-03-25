@@ -1,9 +1,17 @@
-let express = require('express');
-let router = express.Router();
+const express = require('express');
 
-/* GET users listing. */
+const User = require('../models/user');
+const router = express.Router();
+
 router.get('/', function (req, res, next) {
-  res.send('respond with a resource');
+  User.find()
+    .sort({createdAt: 'descending'})
+    .exec(function (err, users) {
+      if (err) {
+        return next(err);
+      }
+      res.json({users: users});
+    });
 });
 
 module.exports = router;
