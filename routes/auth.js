@@ -37,7 +37,11 @@ router.post('/', async (req, res, next) => {
     const payload = {
       email: user.email
     };
-    const token = jwt.sign(payload, secret);
+
+    const opts = {};
+    opts.expiresIn = '1d';
+
+    const token = jwt.sign(payload, secret, opts);
 
     return res.json({
       token: token

@@ -3,6 +3,8 @@ const createError = require('http-errors');
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
+const passport = require('passport');
+require('./setup-passport');
 
 const usersRoutes = require('./routes/users');
 const userRoutes = require('./routes/user');
@@ -16,9 +18,11 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.use('/users', usersRoutes);
-app.use('/user', userRoutes);
+app.use(passport.initialize());
+
 app.use('/auth', authRoutes);
+app.use('/users', passport.authenticate('jwt', {session: false}), usersRoutes);
+app.use('/user', passport.authenticate('jwt', {session: false}), userRoutes);
 
 // 404 에러를 잡아서 에러 던진다.
 app.use(function (req, res, next) {
