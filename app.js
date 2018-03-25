@@ -6,6 +6,7 @@ const morgan = require('morgan');
 
 const usersRoutes = require('./routes/users');
 const userRoutes = require('./routes/user');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 mongoose.connect('mongodb://localhost:27017/tm-d93-conf2018');
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/users', usersRoutes);
 app.use('/user', userRoutes);
+app.use('/auth', authRoutes);
 
 // 404 에러를 잡아서 에러 던진다.
 app.use(function (req, res, next) {
