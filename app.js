@@ -21,8 +21,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
 
 app.use('/auth', authRoutes);
-app.use('/users', passport.authenticate('jwt', {session: false}), usersRoutes);
-app.use('/user', passport.authenticate('jwt', {session: false}), userRoutes);
+app.use(passport.authenticate('jwt', {session: false}));
+app.use('/users', usersRoutes);
+app.use('/user', userRoutes);
 
 // 404 에러를 잡아서 에러 던진다.
 app.use(function (req, res, next) {
