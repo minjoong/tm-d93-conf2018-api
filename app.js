@@ -1,13 +1,16 @@
-const createError = require('http-errors');
 const bodyParser = require('body-parser');
+const createError = require('http-errors');
 const express = require('express');
 const mongoose = require('mongoose');
+const morgan = require('morgan');
 
 const usersRoutes = require('./routes/users');
 const userRoutes = require('./routes/user');
 
 const app = express();
 mongoose.connect('mongodb://localhost:27017/test');
+
+app.use(morgan('dev'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
