@@ -3,9 +3,12 @@ const createError = require('http-errors');
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
+const passport = require('passport');
+require('./setup-passport');
 
 const usersRoutes = require('./routes/users');
 const userRoutes = require('./routes/user');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 mongoose.connect('mongodb://localhost:27017/tm-d93-conf2018');
@@ -15,6 +18,10 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.use(passport.initialize());
+
+app.use('/auth', authRoutes);
+app.use(passport.authenticate('jwt', {session: false}));
 app.use('/users', usersRoutes);
 app.use('/user', userRoutes);
 
