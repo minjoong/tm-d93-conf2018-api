@@ -32,7 +32,7 @@ router.post('/', (req, res, next) => {
       username: username,
       password: password
     });
-    newUser.save(next);
+    newUser.save();
     res.status(201).end();
   });
 });
