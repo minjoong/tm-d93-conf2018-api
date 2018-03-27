@@ -38,7 +38,7 @@ router.get('/:email', async (req, res, next) => {
   }
 });
 
-router.put('/', async (req, res, next) => {
+router.put('/:email', async (req, res, next) => {
   req.user.displayName = req.body.displayname;
   req.user.bio = req.body.bio;
   try {
