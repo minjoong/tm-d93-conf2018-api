@@ -1,4 +1,5 @@
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const createError = require('http-errors');
 const express = require('express');
 const mongoose = require('mongoose');
@@ -12,6 +13,8 @@ const authRoutes = require('./routes/auth');
 
 const app = express();
 mongoose.connect('mongodb://localhost:27017/tm-d93-conf2018');
+
+app.use(cors());
 
 app.use(morgan('dev'));
 
