@@ -23,7 +23,8 @@ const userSchema = mongoose.Schema({
     depositorName: String,
     handicapped: String,
     vipDinner: Boolean
-  }
+  },
+  roles: [String]
 });
 
 userSchema.pre('save', async function (done) {
