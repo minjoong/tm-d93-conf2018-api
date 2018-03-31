@@ -38,15 +38,4 @@ router.get('/:email', async (req, res, next) => {
   }
 });
 
-router.put('/:email', async (req, res, next) => {
-  req.user.displayName = req.body.displayname;
-  req.user.bio = req.body.bio;
-  try {
-    req.user.save();
-    return res.json(req.user);
-  } catch (err) {
-    return next(err);
-  }
-});
-
 module.exports = router;

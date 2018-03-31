@@ -9,6 +9,7 @@ require('./setup-passport');
 
 const usersRoutes = require('./routes/users');
 const userRoutes = require('./routes/user');
+const registrationRoutes = require('./routes/registration');
 const authRoutes = require('./routes/auth');
 const signUpRoutes = require('./routes/sign-up');
 
@@ -25,10 +26,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
 
 app.use('/auth', authRoutes);
-app.use('/signUp', signUpRoutes);
+app.use('/sign-up', signUpRoutes);
 app.use(passport.authenticate('jwt', {session: false}));
 app.use('/users', usersRoutes);
 app.use('/user', userRoutes);
+app.use('/user', registrationRoutes);
 
 // 404 에러를 잡아서 에러 던진다.
 app.use(function (req, res, next) {

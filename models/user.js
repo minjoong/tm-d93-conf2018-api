@@ -9,22 +9,22 @@ const userSchema = mongoose.Schema({
   createdAt: {type: Date, default: Date.now},
   emailConfirmationKey: {type: String, default: () => Math.random().toString(36).substring(2)},
   isEmailConfirmed: {type: Boolean, default: false},
-  engName: String,
-  korName: String,
-  phone: String,
-  communicationLevel: String,
-  leadershipLevel: String,
-  clubs: [String],
-  roleInClub: String,
-  roleInDistrict: String,
-  conferencePlan: String,
-  depositorName: String,
-  handicapped: String,
-  vipDinner: Boolean
+  isRegistered: {type: Boolean, default: false},
+  registration: {
+    engName: String,
+    korName: String,
+    phone: String,
+    communicationLevel: {type: String, enum: ['CC', 'ACB', 'ACS', 'ACG', 'DTM']},
+    leadershipLevel: {type: String, enum: ['CL', 'ALB', 'ALS', 'DTM']},
+    clubs: [String],
+    roleInClub: String,
+    roleInDistrict: String,
+    conferencePlan: {type: String, enum: ['Early Bird', 'Regular', 'On-Site']},
+    depositorName: String,
+    handicapped: String,
+    vipDinner: Boolean
+  }
 });
-
-const noop = () => {
-};
 
 userSchema.pre('save', async function (done) {
   const user = this;

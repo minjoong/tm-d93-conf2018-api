@@ -34,6 +34,9 @@ router.post('/', async (req, res, next) => {
       return next(createError(401, '비밀번호가 틀렸습니다.'));
     }
 
+    // 사용자 정보를 최종 전송할 때, 비밀번호는 가져오지 않는다.
+    user.password = undefined;
+
     const payload = {
       email: user.email
     };
@@ -43,7 +46,7 @@ router.post('/', async (req, res, next) => {
 
     const token = jwt.sign(payload, secret, opts);
 
-    return res.json(token);
+    return res.json({user:user, token:token});
   } catch (err) {
     return next(err);
   }
