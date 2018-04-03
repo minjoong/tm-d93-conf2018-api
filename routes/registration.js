@@ -13,8 +13,12 @@ router.post('/:email/registration', async (req, res, next) => {
   registration.engName = req.body.engName;
   registration.korName = req.body.korName;
   registration.phone = req.body.phone;
-  registration.communicationLevel = req.body.communicationLevel;
-  registration.leadershipLevel = req.body.leadershipLevel;
+  if (req.body.communicationLevel !== '') {
+    registration.communicationLevel = req.body.communicationLevel;
+  }
+  if (req.body.leadershipLevel !== '') {
+    registration.leadershipLevel = req.body.leadershipLevel;
+  }
   registration.clubs = req.body.clubs;
   registration.roleInClub = req.body.roleInClub;
   registration.roleInDistrict = req.body.roleInDistrict;
