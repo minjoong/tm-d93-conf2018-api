@@ -1,30 +1,47 @@
-let createError = require('http-errors');
-let express = require('express');
-let path = require('path');
-let cookieParser = require('cookie-parser');
-let logger = require('morgan');
+const bodyParser = require('body-parser');
+const config = require('config')
+const cors = require('cors');
+const createError = require('http-errors');
+const express = require('express');
+const mongoose = require('mongoose');
+const morgan = require('morgan');
+const passport = require('passport');
+require('./setup-passport');
 
-let indexRouter = require('./routes/index');
-let usersRouter = require('./routes/users');
+const usersRoutes = require('./routes/users');
+const userRoutes = require('./routes/user');
+const registrationRoutes = require('./routes/registration');
+const authRoutes = require('./routes/auth');
+const signUpRoutes = require('./routes/sign-up');
 
-let app = express();
+const app = express();
+mongoose.connect(config.mongodb.uri);
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.use(cors());
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(morgan('dev'));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
-// catch 404 and forward to error handler
+app.use(passport.initialize());
+
+app.use('/auth', authRoutes);
+app.use('/sign-up', signUpRoutes);
+app.use(passport.authenticate('jwt', {session: false}));
+app.use('/users', usersRoutes);
+app.use('/user', userRoutes);
+app.use('/user', registrationRoutes);
+
+// 404 에러를 잡아서 에러 던진다.
 app.use(function (req, res, next) {
-  next(createError(404));
+  next(createError(404, 'Not Found'));
+});
+
+// 모든 에러를 로깅하는 미들웨어
+app.use(function (err, req, res, next) {
+  console.error(err);
+  next(err);
 });
 
 // error handler
@@ -35,7 +52,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json({message: err.message});
 });
 
 module.exports = app;
