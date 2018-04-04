@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt');
+const config = require('config')
 const mongoose = require('mongoose');
 
-const SALT_FACTOR = 10;
+const SALT_FACTOR = config.saltFactor;
 
 const userSchema = mongoose.Schema({
   email: {type: String, required: true, unique: true},

@@ -96,3 +96,5 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+## 개인 설정인 config 디렉토리
+config/

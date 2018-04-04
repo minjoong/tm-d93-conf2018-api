@@ -1,0 +1,11 @@
+{
+  "bcrypt": {
+    "saltFactor": 10
+  },
+  "mongodb": {
+    "uri": "mongodb://localhost:27017/tm-d93-conf2018"
+  },
+  "jwt": {
+    "secret": "secret"
+  }
+}
